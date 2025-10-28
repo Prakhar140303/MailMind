@@ -15,7 +15,7 @@ function Dashboard() {
   useEffect(() => {
     dispatch(fetchMails(limit));
   }, [dispatch, limit]);
-
+  console.log(mails);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">

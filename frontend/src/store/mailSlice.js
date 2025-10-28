@@ -13,12 +13,31 @@ export const fetchMails = createAsyncThunk(
   }
 );
 
+export const classifyMails = createAsyncThunk(
+  "mail/classifyMails",
+  async (emails) => {
+    const geminiKey = sessionStorage.getItem("gemini_api_key");
+    if (!geminiKey) throw new Error("Missing Gemini API key. Set it on the login page.");
+
+    const { data } = await axiosInstance.post("/api/classify", {
+      emails,
+      gemini_key: geminiKey,
+    });
+
+    return data.classifiedMails;
+  }
+);
+
 const mailSlice = createSlice({
   name: "mail",
   initialState: {
     mails: [],
     mailLoading: false,
     error: null,
+
+    classifiedMail: [],
+    classifyLoading: false,
+    classifyError: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -34,6 +53,20 @@ const mailSlice = createSlice({
       .addCase(fetchMails.rejected, (state, action) => {
         state.mailLoading = false;
         state.error = action.error.message || "Failed to fetch mails";
+      })
+      // classifyMails cases
+      .addCase(classifyMails.pending, (state) => {
+        state.classifyLoading = true;
+        state.classifyError = null;
+      })
+      .addCase(classifyMails.fulfilled, (state, action) => {
+        state.classifyLoading = false;
+        state.classifiedMail = Array.isArray(action.payload) ? action.payload : null;
+        state.classifyError = null;
+      })
+      .addCase(classifyMails.rejected, (state, action) => {
+        state.classifyLoading = false;
+        state.classifyError = action.error.message || "Failed to classify mails";
       });
   },
 });
