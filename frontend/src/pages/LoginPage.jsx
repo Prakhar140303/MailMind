@@ -4,7 +4,8 @@ function LoginPage() {
   const [geminiKey, setGeminiKey] = useState("");
   const canLogin = Boolean(geminiKey.trim());
   const handleLogin = () => {
-    window.location.href = "http://localhost:5000/auth/google";
+    const apiBase = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_BASE_URL) || "http://localhost:5000";
+    window.location.href = `${apiBase}/auth/google`;
   };
   useEffect(() => {
       const saved = sessionStorage.getItem("gemini_api_key");

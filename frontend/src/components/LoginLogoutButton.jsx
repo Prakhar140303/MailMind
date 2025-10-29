@@ -13,7 +13,7 @@ function LoginLogoutButton() {
   }
   if(!user){
     return (
-        <button onClick={handleLogin} className='ml-auto bg-slate-300 hover:bg-slate-600 p-2 rounded-md flex gap-2 items-center'>
+        <button onClick={handleLogin} className='ml-auto bg-slate-300 hover:bg-slate-500 hover:text-white p-2 rounded-md flex gap-2 items-center'>
             <h2 className='text-2xl text-white'>Login</h2>
             <img src="google_login.png" alt="google" className='size-6' />
           </button>
@@ -21,7 +21,7 @@ function LoginLogoutButton() {
   }
   return (
   
-          <button onClick={handleLogout} className='ml-auto bg-slate-300 hover:bg-slate-400 hover:scale-105 p-2 rounded-md'>
+          <button onClick={handleLogout} className='ml-auto bg-slate-300 hover:text-white hover:bg-slate-500 hover:scale-110 p-2 rounded-md'>
             Logout
           </button>
   )

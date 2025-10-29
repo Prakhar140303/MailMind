@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import {LogOut} from 'lucide-react'
-import {fmtDate} from '../utils/miscellaneous.js'
+import {categoryStyles} from '../utils/miscellaneous.js'
 export default function MailDrawer({ open, mail, onClose }) {
   useEffect(() => {
     const onKey = (e) => {
@@ -27,12 +27,11 @@ export default function MailDrawer({ open, mail, onClose }) {
         aria-modal="true"
       >
         <div className="flex items-start justify-between p-4 border-b border-slate-200">
-          <div className="pr-4">
+          <div className="pr-4 flex flex-col gap-4">
             <h3 className="text-lg font-semibold leading-snug break-words">{mail.subject}</h3>
             <div className="mt-1 text-sm text-slate-500 break-words">
+              <h2 className={`${categoryStyles[mail?.category]} text-xl font-semibold`}>{mail?.category}</h2>
               From: <span className="text-slate-700 font-medium">{mail.from}</span>
-              <span className="mx-2">•</span>
-              <span>{fmtDate(mail.date)}</span>
             </div>
           </div>
           <button

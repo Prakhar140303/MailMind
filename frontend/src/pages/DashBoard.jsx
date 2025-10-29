@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import LoginLogoutButton from "../components/LoginLogoutButton";
 import LoadingSkeleton from "../components/LoadingSkeleton.jsx";
 import MailDrawer from "../components/MailDrawer.jsx";
-import { fetchMails } from "../store/mailSlice.js";
-import { fmtDate } from "../utils/miscellaneous.js";
+import { fetchMails,classifyMails } from "../store/mailSlice.js";
+import { categoryStyles } from "../utils/miscellaneous.js";
 function Dashboard() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { mails, mailLoading } = useSelector((state) => state.mail);
+  const { mails, mailLoading, classifiedMails ,classifyLoading} = useSelector((state) => state.mail);
   const [selected, setSelected] = useState(null);
   const [limit, setLimit] = useState(10);
 
@@ -16,9 +16,23 @@ function Dashboard() {
     dispatch(fetchMails(limit));
   }, [dispatch, limit]);
   console.log(mails);
+  const handleClassify = () => {
+    dispatch(classifyMails(mails));
+  }
+
+  const utilizedMails = classifiedMails && classifiedMails.length > 0 ? classifiedMails : mails;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
+      {classifyLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <img
+            src="scanningText.gif"
+            alt="Scanning..."
+            className="w-48 h-48 object-contain"
+          />
+        </div>
+      )}
       <header className="max-w-6xl mx-auto p-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold">MailMind</h1>
         <LoginLogoutButton />
@@ -55,9 +69,10 @@ function Dashboard() {
           </aside>
 
           <section>
-            <div className="mb-4">
-              <h2 className="text-xl font-semibold">Inbox</h2>
-              <p className="text-sm text-slate-500">AI-assisted Gmail preview</p>
+            <div className="mb-4 flex justify-between items-center px-4">
+              <h2 className="md:text-2xl text-xl font-semibold ">Inbox</h2>
+              <button className=" py-2 px-4 text-xl bg-slate-300 hover:bg-slate-500 rounded-xl 
+              hover:scale-105 hover:text-white" onClick={handleClassify}>Classify</button>
             </div>
 
             <div className="space-y-4">
@@ -68,20 +83,20 @@ function Dashboard() {
               ) : mails.length === 0 ? (
                 <div className="bg-white shadow rounded-lg p-6 text-center text-slate-500">No mails found</div>
               ) : (
-                mails.map((mail) => (
+                utilizedMails.map((mail) => (
                   <article
                     key={mail.id}
                     className="bg-white shadow-sm hover:shadow-md rounded-lg p-4 transition cursor-pointer"
                     onClick={() => setSelected(mail)}
-                  >
+                  > 
+                  <div className="flex justify-between p-2">
+                            <h3 className="text-lg font-medium truncate">{mail.subject}</h3>
+                            <h2 className={`${categoryStyles[mail?.category]} text-xl font-semibold`}>{mail?.category}</h2>
+                          </div>
                     <div className="flex justify-between items-start gap-4">
                       <div className="flex-1">
-                        <div className="flex items-center justify-between gap-4">
-                          <h3 className="text-lg font-medium truncate">{mail.subject}</h3>
-                          <div className="text-sm text-slate-400">{fmtDate(mail.date)}</div>
-                        </div>
                         <div className="text-sm text-slate-500 mt-1 truncate">
-                          From: <span className="text-slate-700 font-medium">{mail.from}</span>
+                          From: <span className="text-slate-700 font-medium ">{mail.from}</span>
                         </div>
                       </div>
                     </div>

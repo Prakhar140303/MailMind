@@ -35,7 +35,7 @@ const mailSlice = createSlice({
     mailLoading: false,
     error: null,
 
-    classifiedMail: [],
+    classifiedMails: [],
     classifyLoading: false,
     classifyError: null,
   },
@@ -48,6 +48,7 @@ const mailSlice = createSlice({
       .addCase(fetchMails.fulfilled, (state, action) => {
         state.mailLoading = false;
         state.mails = action.payload;
+        state.classifiedMails = [];
         state.error = null;
       })
       .addCase(fetchMails.rejected, (state, action) => {
@@ -61,7 +62,7 @@ const mailSlice = createSlice({
       })
       .addCase(classifyMails.fulfilled, (state, action) => {
         state.classifyLoading = false;
-        state.classifiedMail = Array.isArray(action.payload) ? action.payload : null;
+        state.classifiedMails = Array.isArray(action.payload) ? action.payload : null;
         state.classifyError = null;
       })
       .addCase(classifyMails.rejected, (state, action) => {
