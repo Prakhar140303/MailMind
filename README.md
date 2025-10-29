@@ -25,6 +25,9 @@ Live example (if deployed):
 - Backend (Render): https://mailmind-c9if.onrender.com
 
 
+> 🧠 Classification uses Google Gemini — users must enter their own Gemini API key on the login screen before signing in.
+
+
 ## Project structure
 
 ```

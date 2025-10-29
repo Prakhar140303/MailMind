@@ -8,7 +8,7 @@ function LoginPage() {
     window.location.href = `${apiBase}/auth/google`;
   };
   useEffect(() => {
-      const saved = sessionStorage.getItem("gemini_api_key");
+    const saved = localStorage.getItem("gemini_api_key");
       if (saved) setGeminiKey(saved);
   }, []);
 
@@ -41,18 +41,18 @@ function LoginPage() {
                 try {
                   const api_value = e.target.value;
                   if (api_value && api_value.trim()) {
-                    sessionStorage.setItem("gemini_api_key", api_value.trim());
+                    localStorage.setItem("gemini_api_key", api_value.trim());
                   } else {
-                    sessionStorage.removeItem("gemini_api_key");
+                    localStorage.removeItem("gemini_api_key");
                   }
                 } catch {
-                  console.error("Failed to save Gemini API key to sessionStorage");
+                  console.error("Failed to save Gemini API key to localStorage");
                 }
               }}
               placeholder="Enter your Gemini API key"
               className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
             />
-            <p className="mt-2 text-xs text-slate-500">Stored only in this browser session.</p>
+            <p className="mt-2 text-xs text-slate-500">Stored in this browser (local storage).</p>
           </div>
 
           <button

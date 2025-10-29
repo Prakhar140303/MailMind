@@ -16,7 +16,7 @@ export const fetchMails = createAsyncThunk(
 export const classifyMails = createAsyncThunk(
   "mail/classifyMails",
   async (emails) => {
-    const geminiKey = sessionStorage.getItem("gemini_api_key");
+    const geminiKey = localStorage.getItem("gemini_api_key");
     if (!geminiKey) throw new Error("Missing Gemini API key. Set it on the login page.");
 
     const { data } = await axiosInstance.post("/api/classify", {
