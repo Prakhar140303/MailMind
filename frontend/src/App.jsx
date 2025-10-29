@@ -5,7 +5,6 @@ import {useDispatch, useSelector} from 'react-redux'
 import { useEffect } from "react";
 import { fetchSession } from "./store/authSlice.js";
 import ProtectedRoute from "./utils/ProtectedRoutes.jsx"; 
-import Header from "./components/Header.jsx";
 
 function App() {
   const dispatch = useDispatch();
