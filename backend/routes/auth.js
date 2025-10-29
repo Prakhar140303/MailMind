@@ -56,10 +56,17 @@ router.get("/google/callback", async (req, res) => {
 
     }
     const jwtToken = jwt.sign(payLoad, process.env.JWT_sECRET,{expiresIn: '2h'});
-    res.cookie('token', jwtToken, { httpOnly: true, secure: false, 
-      maxAge: 2 * 60 * 60 * 1000
+    const isProd = process.env.NODE_ENV === 'production';
+    const sameSite = isProd ? 'None' : 'Lax';
+    const secure = isProd ? true : false;
+    res.cookie('token', jwtToken, {
+      httpOnly: true,
+      secure,
+      sameSite,
+      maxAge: 2 * 60 * 60 * 1000,
     });
-    res.redirect(`http://localhost:5173/dashboard`);
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    res.redirect(`${frontendUrl}/dashboard`);
   } catch (err) {
     console.error("OAuth Error:", err);
     res.status(500).send("Authentication Failed");
