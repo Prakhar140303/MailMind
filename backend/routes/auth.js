@@ -55,7 +55,7 @@ router.get("/google/callback", async (req, res) => {
       }
 
     }
-    const jwtToken = jwt.sign(payLoad, process.env.JWT_sECRET,{expiresIn: '2h'});
+    const jwtToken = jwt.sign(payLoad, process.env.JWT_SECRET,{expiresIn: '2h'});
     const isProd = process.env.NODE_ENV === 'production';
     const sameSite = isProd ? 'None' : 'Lax';
     const secure = isProd ? true : false;
