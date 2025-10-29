@@ -43,7 +43,7 @@ backend/
 frontend/
 	src/
 		pages/
-			LoginPage.jsx         # Google sign‑in + Gemini API key input (sessionStorage)
+			LoginPage.jsx         # Google sign‑in + Gemini API key input (localStorage)
 			DashBoard.jsx         # Main UI — list, drawer, classify, loader overlay
 		components/
 			LoadingSkeleton.jsx   # List skeletons
@@ -144,13 +144,13 @@ All routes are relative to the backend base URL.
 	- Calls `/auth/google/mails?maxResults=<limit>`
 	- Stores `mails`
 - `classifyMails(emails)`
-	- Uses `sessionStorage.getItem('gemini_api_key')`
+	- Uses `localStorage.getItem('gemini_api_key')`
 	- Calls `POST /api/classify`
 	- Stores `classifiedMails`
 
 Gemini API key
 
-- Enter on Login page; stored in `sessionStorage` as `gemini_api_key`.
+- Enter on Login page; stored in `localStorage` as `gemini_api_key`.
 - Login button is disabled until a non‑empty key is entered.
 
 
